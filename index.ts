@@ -3,9 +3,8 @@ import webhook from "webhook-discord"
 
 // Main
 export const discordUpdate = async () => {
-  const discordWebhook = process.env.DISCORD_WEBHOOK_URL as string;
+  const discordWebhook = process.env.DISCORD_WEBHOOK as string;
   const Hook = new webhook.Webhook(discordWebhook);
-
   // Fetch RAI stats from subgraph
   const stats = await getSubgraphData();
 
