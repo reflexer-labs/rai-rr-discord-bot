@@ -6,23 +6,14 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: 'us-west-2'
-  layers:
-    # Google Chrome for AWS Lambda as a layer
-    # https://github.com/shelfio/chrome-aws-lambda-layer
-    - arn:aws:lambda:${self:provider.region}:764866452798:layer:chrome-aws-lambda:10
   environment:
     DISCORD_WEBHOOK: ${param:DISCORD_WEBHOOK}
 
 plugins:
   - serverless-plugin-typescript
-  # - serverless-plugin-chrome
-
-package:
-  exclude:
-    - node_modules/puppeteer/.local-chromium/**
 
 functions:
-  tweetUpdate:
+  discordUpdate:
     handler: index.discordUpdate
     timeout: 240
     events:
