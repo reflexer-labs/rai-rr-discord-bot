@@ -1,5 +1,5 @@
 {
-  "name": "rai-stats-bot",
+  "name": "rai-discord-rr-bot",
   "version": "1.0.0",
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
@@ -12,7 +12,8 @@
     "axios": "^0.21.0",
     "serverless-plugin-typescript": "^1.1.9",
     "source-map-support": "^0.5.10",
-    "twit": "^2.2.11"
+    "twit": "^2.2.11",
+    "webhook-discord": "^3.7.7"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",

@@ -1,6 +1,6 @@
 org: reflexer
-app: rai-stats-bot
-service: rai-stats-bot
+app: rai-discord-rr-bot
+service: rai-discord-rr-bot
 
 provider:
   name: aws
@@ -16,6 +16,7 @@ provider:
     CONSUMER_SECRET: ${param:CONSUMER_SECRET}
     ACCESS_TOKEN: ${param:ACCESS_TOKEN}
     ACCESS_TOKEN_SECRET: ${param:ACCESS_TOKEN_SECRET}
+    DISCORD_WEBHOOK: ${param:DISCORD_WEBHOOK_URL}
 
 plugins:
   - serverless-plugin-typescript
@@ -27,7 +28,7 @@ package:
 
 functions:
   tweetUpdate:
-    handler: index.tweetUpdate
+    handler: index.discordUpdate
     timeout: 240
     events:
-      - schedule: rate(8 hours)
+      - schedule: rate(60 minutes)
