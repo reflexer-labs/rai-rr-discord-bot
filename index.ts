@@ -1,5 +1,5 @@
 import Axios from "axios";
-import webhook from "webhook-discord"
+import webhook from "webhook-discord";
 
 // Main
 export const discordUpdate = async () => {
@@ -17,11 +17,13 @@ Annualized Rate: ${stats.annualizedRate}%
 The Market Price is $${stats.marketPrice} and the Redemption Price is $${stats.redemptionPrice}
 `;
 
-// Construct message. See webhook-discord docs for more options
-const msg = new webhook.MessageBuilder().setText(msgContent);
-// Send msg
-Hook.send(msg);
-console.log(`Posted Discord msg: ${msgContent}`);
+  // Construct message. See webhook-discord docs for more options
+  const msg = new webhook.MessageBuilder()
+    .setText(msgContent)
+    .setName("Rai-stats-bot");
+  // Send msg
+  await Hook.send(msg);
+  console.log(`Posted Discord msg: ${msgContent}`);
 };
 
 // == Subgraph ==
@@ -77,12 +79,13 @@ const getSubgraphData = async () => {
     (parseFloat(res.systemState.currentRedemptionRate.annualizedRate) - 1) *
     100;
 
-  const eightHourlyRate = 
-  (parseFloat(res.systemState.currentRedemptionRate.eightHourlyRate) - 1) *
+  const eightHourlyRate =
+    (parseFloat(res.systemState.currentRedemptionRate.eightHourlyRate) - 1) *
     100;
 
-  const twentyFourHourlyRate = 
-  (parseFloat(res.systemState.currentRedemptionRate.twentyFourHourlyRate) - 1) *
+  const twentyFourHourlyRate =
+    (parseFloat(res.systemState.currentRedemptionRate.twentyFourHourlyRate) -
+      1) *
     100;
 
   const uniswapPaiPrice = parseFloat(res.uniswapPair.token1Price);
