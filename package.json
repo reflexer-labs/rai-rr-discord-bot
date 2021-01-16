@@ -4,15 +4,13 @@
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
   "scripts": {
-    "local": "serverless invoke local --stage prod --function tweetUpdate",
+    "local": "serverless invoke local --stage prod --function discordUpdate",
     "deploy": "serverless deploy --stage prod"
   },
   "dependencies": {
-    "@types/twit": "^2.2.28",
     "axios": "^0.21.0",
     "serverless-plugin-typescript": "^1.1.9",
     "source-map-support": "^0.5.10",
-    "twit": "^2.2.11",
     "webhook-discord": "^3.7.7"
   },
   "devDependencies": {
