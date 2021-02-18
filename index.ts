@@ -9,12 +9,11 @@ export const discordUpdate = async () => {
   const stats = await getSubgraphData();
 
   // Spacing made to align the prices with Twitter font
-  const msgContent = `🗿 Redemption Rate Update 🗿
-8-hourly Rate: ${stats.eightHourlyRate}%
-Daily Rate: ${stats.twentyFourHourlyRate}%
-Annualized Rate: ${stats.annualizedRate}%
-
-The Market Price is $${stats.marketPrice} and the Redemption Price is $${stats.redemptionPrice}
+  const msgContent = `🗿 RAI stats update 🗿
+24-Hourly RAI Redemption Rate: ${stats.twentyFourHourlyRate}%
+Redemption Price is $${stats.redemptionPrice}
+Market price: $${stats.marketPrice}
+Oracle price: $${stats.oraclePrice}
 `;
 
   // Construct message. See webhook-discord docs for more options
@@ -23,6 +22,7 @@ The Market Price is $${stats.marketPrice} and the Redemption Price is $${stats.r
     .setName("Rai-stats-bot");
   // Send msg
   await Hook.send(msg);
+
   console.log(`Posted Discord msg: ${msgContent}`);
 };
 
@@ -38,15 +38,9 @@ const getSubgraphData = async () => {
         value
       }
       currentRedemptionRate {
-        annualizedRate
-      }
-      currentRedemptionRate {
-        eightHourlyRate
-      }
-      currentRedemptionRate {
         twentyFourHourlyRate
       }
-      currentCoinFsmUpdate {
+      currentCoinMedianizerUpdate {
         value
       }
       
@@ -56,7 +50,7 @@ const getSubgraphData = async () => {
           value
         }
       }
-      uniswapPair(id: "0xebde9f61e34b7ac5aae5a4170e964ea85988008c") {
+      uniswapPair(id: "0x8ae720a71622e824f576b4a8c03031066548a3b1") {
         token1Price
       }
     }`
@@ -75,13 +69,6 @@ const getSubgraphData = async () => {
   const redemptionPrice = parseFloat(
     res.systemState.currentRedemptionPrice.value
   );
-  const annualizedRate =
-    (parseFloat(res.systemState.currentRedemptionRate.annualizedRate) - 1) *
-    100;
-
-  const eightHourlyRate =
-    (parseFloat(res.systemState.currentRedemptionRate.eightHourlyRate) - 1) *
-    100;
 
   const twentyFourHourlyRate =
     (parseFloat(res.systemState.currentRedemptionRate.twentyFourHourlyRate) -
@@ -90,12 +77,15 @@ const getSubgraphData = async () => {
 
   const uniswapPaiPrice = parseFloat(res.uniswapPair.token1Price);
 
+  const oraclePrice = parseFloat(
+    res.systemState.currentCoinMedianizerUpdate.value
+  );
+
   return {
-    annualizedRate: annualizedRate.toFixed(2),
-    eightHourlyRate: eightHourlyRate.toFixed(8),
     twentyFourHourlyRate: twentyFourHourlyRate.toFixed(8),
     marketPrice: (uniswapPaiPrice * ethPrice).toFixed(4),
     redemptionPrice: redemptionPrice.toFixed(4),
+    oraclePrice: oraclePrice.toFixed(4),
   };
 };
 
