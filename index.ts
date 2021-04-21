@@ -11,9 +11,11 @@ export const discordUpdate = async () => {
   // Spacing made to align the prices with Twitter font
   const msgContent = `🗿 RAI stats update 🗿
 24-Hourly RAI Redemption Rate: ${stats.twentyFourHourlyRate}%
-Redemption Price is $${stats.redemptionPrice}
-Market price: $${stats.marketPrice}
-Oracle price: $${stats.oraclePrice}
+RAI Redemption Price: $${stats.redemptionPrice}
+RAI Market price (Uniswap): $${stats.marketPrice}
+RAI Market Price (TWAP): $${stats.oraclePrice}
+ETH Price (OSM): $${stats.osmEthPrice}
+ETH Price (Next OSM): $${stats.osmEthPriceNext}
 `;
 
   // Construct message. See webhook-discord docs for more options
@@ -49,6 +51,9 @@ const getSubgraphData = async () => {
         currentPrice {
           value
         }
+        currentFsmUpdate {
+          nextValue
+        }
       }
       uniswapPair(id: "0x8ae720a71622e824f576b4a8c03031066548a3b1") {
         token1Price
@@ -81,11 +86,18 @@ const getSubgraphData = async () => {
     res.systemState.currentCoinMedianizerUpdate.value
   );
 
+  const osmEthPrice = parseFloat(res.collateralType.currentPrice.value);
+  const osmEthPriceNext = parseFloat(
+    res.collateralType.currentFsmUpdate.nextValue
+  );
+
   return {
-    twentyFourHourlyRate: twentyFourHourlyRate.toFixed(8),
+    twentyFourHourlyRate: twentyFourHourlyRate.toFixed(4),
     marketPrice: (uniswapPaiPrice * ethPrice).toFixed(4),
     redemptionPrice: redemptionPrice.toFixed(4),
     oraclePrice: oraclePrice.toFixed(4),
+    osmEthPrice: osmEthPrice.toFixed(2),
+    osmEthPriceNext: osmEthPriceNext.toFixed(2),
   };
 };
 
