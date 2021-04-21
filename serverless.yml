@@ -4,13 +4,13 @@ service: rai-discord-rr-bot
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   region: 'us-west-2'
   environment:
     DISCORD_WEBHOOK: ${param:DISCORD_WEBHOOK}
 
 plugins:
-  - serverless-plugin-typescript
+  - serverless-webpack
 
 functions:
   discordUpdate:
@@ -18,3 +18,8 @@ functions:
     timeout: 240
     events:
       - schedule: rate(240 minutes)
+
+custom:
+  webpack:
+    webpackConfig: './webpack.config.js'
+    includeModules: true
